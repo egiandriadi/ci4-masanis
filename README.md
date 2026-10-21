@@ -1,69 +1,122 @@
-# CodeIgniter 4 Application Starter
+# Sistem Jurnal Penilaian Perkembangan Siswa TK - Mas Anis
 
-## What is CodeIgniter?
+Aplikasi sistem informasi penilaian dan perkembangan harian/tahunan anak berbasis **CodeIgniter 4**, disesuaikan dengan kurikulum serta indikator penilaian karakter anak usia dini (Spiritual, Emosional, Belajar/Kognitif, Adab & Kebiasaan Baik).
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+---
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## 📋 Fitur Utama
+- **Autentikasi Multi-Role**: Administrator, Guru (Wali Kelas), dan Orang Tua Murid.
+- **Profil Sekolah & Tahun Ajaran**: Pengaturan profil instansi serta semester aktif.
+- **Manajemen Indikator Penilaian**: 18 Indikator standar yang terbagi dalam pilar-pilar karakter (Skor 0, 1, dan 2).
+- **Penilaian Harian**: Input rekapitulasi penilaian harian per kelas dengan indikator perkembangan siswa.
+- **Laporan & Rekap Hasil**: Tinjauan rekap harian, kelas, dan grafik perkembangan tahunan.
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+---
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+## 💻 Kebutuhan Sistem (System Requirements)
+- **PHP**: Versi `>= 8.1` (Direkomendasikan PHP 8.2)
+- **Ekstensi PHP**:
+  - `intl`
+  - `mbstring`
+  - `mysqli`
+  - `json`
+  - `curl`
+- **Database**: MySQL 5.7+ / MariaDB 10.3+
+- **Composer**: Versi 2.x
 
-## Installation & updates
+---
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+## 🚀 Panduan Instalasi
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+### 1. Clone Repository
+```bash
+git clone https://github.com/egiandriadi/ci4-masanis.git
+cd ci4-masanis
+```
 
-## Setup
+### 2. Install Dependensi PHP
+Jalankan composer untuk mengunduh library yang dibutuhkan:
+```bash
+composer install
+```
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+### 3. Konfigurasi Environment (`.env`)
+Salin file konfigurasi environment:
+```bash
+cp env .env
+```
 
-## Important Change with index.php
+Buka file `.env` dan sesuaikan konfigurasi aplikasi serta koneksi database:
+```ini
+CI_ENVIRONMENT = development
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+app.baseURL = 'http://localhost:8080/'
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+# Konfigurasi Database Lokal Anda
+database.default.hostname = localhost
+database.default.database = db_masanis
+database.default.username = root
+database.default.password = 
+database.default.DBDriver = MySQLi
+database.default.port = 3306
+```
 
-**Please** read the user guide for a better explanation of how CI4 works!
+---
 
-## Repository Management
+## 🗄️ Setup Database
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+Tersedia dua opsi untuk inisialisasi database:
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+### Opsi A: Import Dump SQL (Rekomendasi)
+Tersedia file backup lengkap di root folder proyek: `db_masanis.sql`.
+1. Buat database baru di MySQL/MariaDB:
+   ```sql
+   CREATE DATABASE db_masanis;
+   ```
+2. Import file `db_masanis.sql`:
+   - **Melalui Terminal/CLI**:
+     ```bash
+     mysql -u root -p db_masanis < db_masanis.sql
+     ```
+   - **Melalui GUI (phpMyAdmin / DBeaver / Navicat)**:
+     Pilih database `db_masanis`, lalu gunakan menu **Import** dan pilih file `db_masanis.sql`.
 
-## Server Requirements
+### Opsi B: Menggunakan Fitur Migration & Seeder CI4
+Jika ingin membangun struktur dan data bawaan dari kode sumber:
+```bash
+php spark migrate
+php spark db:seed InitialDataSeeder
+```
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+---
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+## 🏃 Menjalankan Aplikasi
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+Jalankan built-in development server CodeIgniter:
+```bash
+php spark serve
+```
+Buka browser dan akses aplikasi melalui: [http://localhost:8080](http://localhost:8080)
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+*(Jika menggunakan port lain, sesuaikan juga `app.baseURL` di file `.env`)*
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+---
+
+## 🔑 Akun Default / Percobaan
+
+| Role | Username / ID | Password | Keterangan |
+| :--- | :--- | :--- | :--- |
+| **Admin** | `admin` | `admin123` | Akses penuh dashboard, master data, user & sekolah |
+| **Guru** | `guru1` | `guru123` | Akses input penilaian dan kelas |
+| **Orang Tua** | `2026001` *(NIS)* | `siswa123` | Akses pantau rekap dan perkembangan anak |
+
+---
+
+## 📁 Struktur Folder Utama
+- `app/Controllers/`: Logika alur proses aplikasi (Auth, Dashboard, Assessment, dsb).
+- `app/Database/Migrations/`: Skema tabel database CodeIgniter.
+- `app/Database/Seeds/`: Data awal (indikator, akun demo, pilar karakter).
+- `app/Models/`: Model query database.
+- `app/Views/`: Template antarmuka pengguna (UI).
+- `public/`: Webroot publik (CSS, JS, assets, index.php).
+- `db_masanis.sql`: Backup/dump database sistem.
